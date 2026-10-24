@@ -1,0 +1,10 @@
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { Check, Clock3, HeartHandshake, ShieldCheck, Sparkles } from 'lucide-react';
+import { copy, isLocale } from '@/lib/i18n';
+import SiteShell from '@/components/SiteShell';
+import AdSlot from '@/components/AdSlot';
+export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
+ const { locale: raw } = await params; if (!isLocale(raw)) notFound(); const locale = raw; const t = copy[locale];
+ return <SiteShell locale={locale}><main className="shell"><section className="hero"><div><span className="eyebrow">{t.eyebrow}</span><h1>{t.title}</h1><p>{t.subtitle}</p><div style={{marginTop:28}}><Link className="primary-btn" href={`/${locale}/survey`}>{t.start} <span style={{marginLeft:12}}>↗</span></Link></div><div className="hero-meta"><span><Clock3 size={15} style={{display:'inline',verticalAlign:'middle',marginRight:5}}/>{t.time}</span><span><ShieldCheck size={15} style={{display:'inline',verticalAlign:'middle',marginRight:5}}/>{t.privacy}</span></div></div><div className="hero-card"><div className="card-top"><span>{t.surveyTitle}</span><div className="dots"><i/><i/><i/></div></div><div className="preview-question">{t.question1}</div>{t.options1.slice(0,4).map((option,i)=><div className={`preview-option ${i===0?'active':''}`} key={option}>{i===0?'✓':'○'} <span style={{marginLeft:8}}>{option}</span></div>)}<div style={{height:7,background:'#eeeef9',borderRadius:9,marginTop:20}}><div style={{height:7,width:'34%',background:'#7777df',borderRadius:9}}/></div></div></section><AdSlot label={t.adLabel}/><section className="feature-grid"><article className="feature"><div className="feature-icon"><Sparkles size={19}/></div><div><h3>{t.feature1}</h3><p>{t.feature1d}</p></div></article><article className="feature"><div className="feature-icon"><HeartHandshake size={19}/></div><div><h3>{t.feature2}</h3><p>{t.feature2d}</p></div></article><article className="feature"><div className="feature-icon"><Check size={19}/></div><div><h3>{t.feature3}</h3><p>{t.feature3d}</p></div></article></section></main></SiteShell>;
+}
